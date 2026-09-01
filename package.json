@@ -1,0 +1,28 @@
+{
+  "name": "xiaotan-bookkeeping",
+  "version": "0.1.0",
+  "description": "小谭记账 —— 个人桌面记账软件",
+  "main": "./out/main/index.js",
+  "private": true,
+  "author": "小谭",
+  "scripts": {
+    "dev": "node scripts/launch.mjs dev",
+    "build": "electron-vite build",
+    "preview": "node scripts/launch.mjs preview",
+    "dist:win": "electron-vite build && electron-builder --win"
+  },
+  "dependencies": {
+    "echarts": "^5.6.0",
+    "element-plus": "^2.9.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "electron": "^38.0.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^4.0.0",
+    "typescript": "^5.6.0",
+    "vite": "^7.0.0"
+  }
+}

@@ -1,0 +1,14 @@
+# 下载的开发材料（随时可重新下载，不存档）
+node_modules/
+
+# 构建与打包产物（随时可重新生成，不存档）
+out/
+dist/
+
+# 日志与临时文件
+*.log
+.DS_Store
+Thumbs.db
+
+# 打包工具可能在本目录留下的临时整理文件夹（应用的复制品，可安全删除）
+xiaotan-bookkeeping/

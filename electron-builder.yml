@@ -1,0 +1,21 @@
+# 打包配置（Windows 安装包）
+appId: com.xiaotan.bookkeeping
+productName: 小谭记账
+directories:
+  output: dist
+files:
+  # 只打包构建产物和描述文件，安装包更小（界面和功能代码都已打包进 out 目录）
+  - out/**/*
+  - package.json
+win:
+  target:
+    - nsis
+  icon: build/icon.png
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: 小谭记账
+  artifactName: 小谭记账-${version}-安装包.${ext}
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
