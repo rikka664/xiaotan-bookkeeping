@@ -96,6 +96,8 @@
 - **停止开发服务后要清残留**：TaskStop 只杀外层进程，需再按端口清理（netstat 查 5173 监听 PID → taskkill /F /T），否则会占端口且多开 Electron 实例互抢缓存。
 - **打包命令**：`npm run dist:win`（构建 + 生成 Windows 安装包，走国内镜像加速）。安装包输出到 dist/ 目录。Mac 安装包按用户决定暂不制作。
 - **打包残留**：electron-builder 打包后可能在项目根目录留下一个 `xiaotan-bookkeeping/` 临时文件夹（应用复制品，非安装文件，已加入 .gitignore），打包完成后检查并删除即可。
+- **本机安装注意事项**：NSIS 安装包静默安装（/S）在本机可能被 360 安全卫士拦截（2026-09-01 实测未生效）。备选方案（已验证可用）：手动安装 = 复制 dist/win-unpacked 内容到 `%LOCALAPPDATA%\Programs\小谭记账` + 用 WScript.Shell COM 创建桌面/开始菜单快捷方式 + 在 `HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\xiaotan-bookkeeping` 登记卸载信息（卸载脚本在安装目录 uninstall.ps1）。
+- **中文命令注意事项**：本机 PowerShell 的 `-c` 参数里不要直接写中文（经 bash 传递会乱码）；中文一律用环境变量传递，或写成无中文字面量的脚本。
 - **数据目录**：账本数据库在 `%APPDATA%\小谭记账\xiaotan.db`（开发版与安装版共用；app.setName('小谭记账') 统一了名称，勿删）。
 - **图标**：`node scripts/gen-icon.mjs` 生成 build/icon.png（纯代码绘制铜钱图标，带终端字符预览），打包时自动转为 .ico。
 - **数据库**：使用 Electron 内置的 node:sqlite（Node 22 自带，无原生编译依赖），控制台会打印 ExperimentalWarning，属正常现象。
