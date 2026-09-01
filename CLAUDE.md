@@ -102,7 +102,7 @@
 - **数据目录**：账本数据库在 `%APPDATA%\小谭记账\xiaotan.db`（开发版与安装版共用；app.setName('小谭记账') 统一了名称，勿删）。
 - **图标**：`node scripts/gen-icon.mjs` 生成 build/icon.png（纯代码绘制铜钱图标，带终端字符预览），打包时自动转为 .ico。
 - **数据库**：使用 Electron 内置的 node:sqlite（Node 22 自带，无原生编译依赖），控制台会打印 ExperimentalWarning，属正常现象。
-- **GitHub 云端存档**：仓库 https://github.com/rikka664/xiaotan-bookkeeping（公开）。本机已装 GitHub 官方工具 gh（位于 `C:\Program Files\GitHub CLI\gh.exe`，命令行找不到时用完整路径），已登录账号 rikka664，git 凭证已配置好（gh 自动接管）。**上传/同步必须开 VPN**：本机网络直连 GitHub 极不稳定（实测 HTTPS 频繁重置、超时），曾尝试 hosts 指定 IP 方案，已因与 VPN 冲突而全部移除。发布新版本安装包：`gh release create v0.x.x "dist/小谭记账-0.x.x-安装包.exe" --title "小谭记账 v0.x.x" --notes-file 说明文件`。本机另有未使用的 SSH 密钥 ~/.ssh/id_ed25519（SSH 走 443 端口通道已验证连通，日后 HTTPS 再出问题可用）。
+- **GitHub 云端存档**：仓库 https://github.com/rikka664/xiaotan-bookkeeping（公开）。本机已装 GitHub 官方工具 gh（位于 `C:\Program Files\GitHub CLI\gh.exe`，命令行找不到时用完整路径），已登录账号 rikka664，git 凭证已配置好（gh 自动接管）。**上传/同步必须开 VPN**：本机网络直连 GitHub 极不稳定（实测 HTTPS 频繁重置、超时），曾尝试 hosts 指定 IP 方案，已因与 VPN 冲突而全部移除。发布新版本安装包：`gh release create v0.x.x "dist/小谭记账-0.x.x-安装包.exe" --title "小谭记账 v0.x.x" --notes-file 说明文件`。**注意：GitHub 服务器会自动去掉安装包文件名里的中文**（实测标题和说明文字不受影响），所以上传前把安装包复制一份英文名（如 Xiaotan-Bookkeeping-0.x.x-Setup.exe）再作为附件上传，或在说明文字里注明实际下载文件名。本机另有未使用的 SSH 密钥 ~/.ssh/id_ed25519（SSH 走 443 端口通道已验证连通，日后 HTTPS 再出问题可用）。
 
 ## 七、协作规则（最重要，整个项目期间必须严格遵守）
 
