@@ -86,6 +86,7 @@
 | 4 | 测试与修复问题 | ✅ 核心功能已由用户验收（2026-09-01） |
 | 5 | 打包 Windows 安装包 | ✅ 已完成（2026-09-01，v0.1.0 安装包 106MB） |
 | 6 | 上传 GitHub 云端备份（公开仓库 + 安装包下载区） | ✅ 已完成（2026-09-01，https://github.com/rikka664/xiaotan-bookkeeping） |
+| 7 | 建立单元测试（46 个用例全部通过） | ✅ 已完成（2026-09-02） |
 
 注：用户于 2026-09-01 决定暂不制作 Mac 安装包。应用代码本身兼容 Mac，日后需要可随时补做。
 
@@ -96,6 +97,7 @@
 - **主进程热重载不生效**：electron-vite dev 对本机 src/main、src/preload 的改动监听不生效（中文路径兼容问题），改完必须重启 `npm run dev`；界面（src/renderer）改动可正常热更新。
 - **停止开发服务后要清残留**：TaskStop 只杀外层进程，需再按端口清理（netstat 查 5173 监听 PID → taskkill /F /T），否则会占端口且多开 Electron 实例互抢缓存。
 - **打包命令**：`npm run dist:win`（构建 + 生成 Windows 安装包，走国内镜像加速）。安装包输出到 dist/ 目录。Mac 安装包按用户决定暂不制作。
+- **单元测试**：`npm test`（即 npx vitest run，一次跑完出结果，不要用 watch——中文路径下监听失灵）。测试代码在 tests/ 目录，共 46 个用例：分类体系、主进程记账接口（假扮 electron + 临时目录假账本，绝不碰真实账本）、三个页面组件（假扮 window.api + echarts）。测试工具 Vitest 由用户 2026-09-02 拍板选定。可用 /unit-test 技能一键跑测试并出大白话报告。
 - **打包残留**：electron-builder 打包后可能在项目根目录留下一个 `xiaotan-bookkeeping/` 临时文件夹（应用复制品，非安装文件，已加入 .gitignore），打包完成后检查并删除即可。
 - **本机安装注意事项**：NSIS 安装包静默安装（/S）在本机可能被 360 安全卫士拦截（2026-09-01 实测未生效）。备选方案（已验证可用）：手动安装 = 复制 dist/win-unpacked 内容到 `%LOCALAPPDATA%\Programs\小谭记账` + 用 WScript.Shell COM 创建桌面/开始菜单快捷方式 + 在 `HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\xiaotan-bookkeeping` 登记卸载信息（卸载脚本在安装目录 uninstall.ps1）。
 - **中文命令注意事项**：本机 PowerShell 的 `-c` 参数里不要直接写中文（经 bash 传递会乱码）；中文一律用环境变量传递，或写成无中文字面量的脚本。
