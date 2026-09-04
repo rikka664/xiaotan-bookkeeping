@@ -12,3 +12,6 @@ Thumbs.db
 
 # 打包工具可能在本目录留下的临时整理文件夹（应用的复制品，可安全删除）
 xiaotan-bookkeeping/
+
+# uni-app 手机版编译产物（随时可重新生成，不存档）
+mobile/unpackage/

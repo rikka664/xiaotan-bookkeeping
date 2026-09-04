@@ -1,0 +1,37 @@
+{
+  "pages": [
+    {
+      "path": "pages/record/record",
+      "style": { "navigationBarTitleText": "记一笔" }
+    },
+    {
+      "path": "pages/bills/bills",
+      "style": { "navigationBarTitleText": "账单" }
+    },
+    {
+      "path": "pages/stats/stats",
+      "style": { "navigationBarTitleText": "统计" }
+    },
+    {
+      "path": "pages/edit/edit",
+      "style": { "navigationBarTitleText": "修改账单" }
+    }
+  ],
+  "tabBar": {
+    "color": "#909399",
+    "selectedColor": "#2f6fed",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/record/record", "text": "记一笔" },
+      { "pagePath": "pages/bills/bills", "text": "账单" },
+      { "pagePath": "pages/stats/stats", "text": "统计" }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "小谭记账",
+    "navigationBarBackgroundColor": "#2f6fed",
+    "backgroundColor": "#f5f6f8"
+  }
+}
