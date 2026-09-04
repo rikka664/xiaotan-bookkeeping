@@ -87,6 +87,7 @@
 | 5 | 打包 Windows 安装包 | ✅ 已完成（2026-09-01，v0.1.0 安装包 106MB） |
 | 6 | 上传 GitHub 云端备份（公开仓库 + 安装包下载区） | ✅ 已完成（2026-09-01，https://github.com/rikka664/xiaotan-bookkeeping） |
 | 7 | 建立单元测试（46 个用例全部通过） | ✅ 已完成（2026-09-02） |
+| 8 | 手机版：uni-app 重写 + 云打包 APK | 🚧 进行中（2026-09-04，try-android 分支，代码在 mobile/ 目录） |
 
 注：用户于 2026-09-01 决定暂不制作 Mac 安装包。应用代码本身兼容 Mac，日后需要可随时补做。
 
@@ -98,12 +99,16 @@
 - **停止开发服务后要清残留**：TaskStop 只杀外层进程，需再按端口清理（netstat 查 5173 监听 PID → taskkill /F /T），否则会占端口且多开 Electron 实例互抢缓存。
 - **打包命令**：`npm run dist:win`（构建 + 生成 Windows 安装包，走国内镜像加速）。安装包输出到 dist/ 目录。Mac 安装包按用户决定暂不制作。
 - **单元测试**：`npm test`（即 npx vitest run，一次跑完出结果，不要用 watch——中文路径下监听失灵）。测试代码在 tests/ 目录，共 46 个用例：分类体系、主进程记账接口（假扮 electron + 临时目录假账本，绝不碰真实账本）、三个页面组件（假扮 window.api + echarts）。测试工具 Vitest 由用户 2026-09-02 拍板选定。可用 /unit-test 技能一键跑测试并出大白话报告。
+- **代码注释要求**（2026-09-02 用户提出，写代码时就要遵守）：① 每个函数、每段重要核心代码都要有详细中文注释；② 注释必须和代码实际行为一致；③ 注释要从编程小白视角写，术语当场用大白话解释。事后体检存量代码可用 /comments-check 技能。
+- **安全检查**：可用 /security-audit 技能做安全体检（敏感信息泄露、SQL 注入、配置明文泄露、Electron 安全配置）。注意：仓库是公开的，任何密钥/隐私提交上去等于永久泄露，写代码和提交时都要留心。
+- **接入第三方模型**：可用 /import-model 技能把任意大模型（Agnes、Kimi、通义千问、智谱等）接入 Claude Code。本机已装 aicodeswitch（`aicos` 命令），网关在 127.0.0.1:4567，当前默认模型 Agnes（免费 agnes-2.5-flash），DeepSeek 备用（deepseek-v4-pro[1m]）。桌面有「切换到Agnes模型.bat」「切换到DeepSeek模型.bat」两个一键切换脚本，切换逻辑在 `C:\Users\Administrator\switch-cc-model.js`。完整踩坑与字段格式见该技能。
 - **打包残留**：electron-builder 打包后可能在项目根目录留下一个 `xiaotan-bookkeeping/` 临时文件夹（应用复制品，非安装文件，已加入 .gitignore），打包完成后检查并删除即可。
 - **本机安装注意事项**：NSIS 安装包静默安装（/S）在本机可能被 360 安全卫士拦截（2026-09-01 实测未生效）。备选方案（已验证可用）：手动安装 = 复制 dist/win-unpacked 内容到 `%LOCALAPPDATA%\Programs\小谭记账` + 用 WScript.Shell COM 创建桌面/开始菜单快捷方式 + 在 `HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\xiaotan-bookkeeping` 登记卸载信息（卸载脚本在安装目录 uninstall.ps1）。
 - **中文命令注意事项**：本机 PowerShell 的 `-c` 参数里不要直接写中文（经 bash 传递会乱码）；中文一律用环境变量传递，或写成无中文字面量的脚本。
 - **数据目录**：账本数据库在 `%APPDATA%\小谭记账\xiaotan.db`（开发版与安装版共用；app.setName('小谭记账') 统一了名称，勿删）。
 - **图标**：`node scripts/gen-icon.mjs` 生成 build/icon.png（纯代码绘制铜钱图标，带终端字符预览），打包时自动转为 .ico。
 - **数据库**：使用 Electron 内置的 node:sqlite（Node 22 自带，无原生编译依赖），控制台会打印 ExperimentalWarning，属正常现象。
+- **手机版（uni-app）**：手机版代码在 `mobile/` 目录（uni-app + Vue3，界面按手机重做，数据层与电脑版同一套规则：金额用分、删除确认、CSV 带 BOM；数据存手机本地 uni storage）。开发用 HBuilderX 打开 mobile 目录（HBuilderX 在 `C:\Users\Administrator\Downloads\HBuilderX\HBuilderX.exe`，命令行工具为同目录 cli.exe）。云打包：`cli.exe pack --project "C:/小谭记账app/mobile" --platform android --android.packagename com.xiaotan.bookkeeping --android.androidpacktype 3`（云端证书，排队约 10 分钟）。AppID：`__UNI__573ED65`，包名：`com.xiaotan.bookkeeping`，DCloud 账号 1969738389@qq.com（已绑手机）。云打包免费（100MB 内）。
 - **GitHub 云端存档**：仓库 https://github.com/rikka664/xiaotan-bookkeeping（公开）。本机已装 GitHub 官方工具 gh（位于 `C:\Program Files\GitHub CLI\gh.exe`，命令行找不到时用完整路径），已登录账号 rikka664，git 凭证已配置好（gh 自动接管）。**上传/同步必须开 VPN**（用户 2026-09-01 确认：本机长期连接国外 VPN，需要时可直接使用）：本机网络直连 GitHub 极不稳定（实测 HTTPS 频繁重置、超时），曾尝试 hosts 指定 IP 方案，已因与 VPN 冲突而全部移除。发布新版本安装包：`gh release create v0.x.x "dist/小谭记账-0.x.x-安装包.exe" --title "小谭记账 v0.x.x" --notes-file 说明文件`。**注意：GitHub 服务器会自动去掉安装包文件名里的中文**（实测标题和说明文字不受影响），所以上传前把安装包复制一份英文名（如 Xiaotan-Bookkeeping-0.x.x-Setup.exe）再作为附件上传，或在说明文字里注明实际下载文件名。本机另有未使用的 SSH 密钥 ~/.ssh/id_ed25519（SSH 走 443 端口通道已验证连通，日后 HTTPS 再出问题可用）。
 
 ## 七、协作规则（最重要，整个项目期间必须严格遵守）
@@ -119,4 +124,4 @@
 5. **操作指引要一步一步**：凡是需要用户在电脑上动手的（安装软件、运行命令、测试应用），给出"打开什么 → 点击哪里 → 输入什么 → 会看到什么"式的详细步骤。
 6. **主动汇报进度**：每完成一个重要阶段或功能，用通俗语言告诉用户做完了什么、怎么查看效果。
 7. **重大决定不擅作主张**：涉及方案选择、产品设计、数据变更等大事，先说明再让用户决定。
-8. **自动存档**（2026-09-01 用户已同意）：项目已加入 git 本机管理。每完成一个功能或重要改动，自动 git commit 存档（说明性中文提交信息），防止代码丢失。项目已同步到 GitHub（见开发备忘录），每次 commit 后若 VPN 已开则顺手 `git push` 同步云端；未开 VPN 时提醒用户开启。
+8. **按需存档**（2026-09-02 用户调整，取代之前的"自动存档"）：项目已加入 git 本机管理，但**不要每完成一个功能就自动 commit**。只有用户调用 `/github-save` 技能（或明确说"存档"）时才 git commit（说明性中文提交信息）。完成后可提醒用户"需要存档时输入 /github-save"。项目已同步到 GitHub（见开发备忘录），存档后若 VPN 已开则顺手 `git push` 同步云端；未开 VPN 时提醒用户开启。
